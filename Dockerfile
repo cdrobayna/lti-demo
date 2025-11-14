@@ -26,7 +26,7 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction --prefer-di
 # Etapa final: FrankenPHP + vendor ya instalado
 FROM dunglas/frankenphp:php8.4-alpine AS production
 
-ENV SERVER_NAME=lti.dealernode.net
+ENV SERVER_NAME=:80
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
 WORKDIR /application
