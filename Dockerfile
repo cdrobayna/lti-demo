@@ -32,10 +32,10 @@ RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 WORKDIR /application
 
 # (Repite instalación de extensiones para runtime)
-#RUN install-php-extensions \
+RUN install-php-extensions \
+      pdo_pgsql
 #      intl \
 #      gd \
-#      pdo_pgsql \
 #      zip
 
 # Copiamos el vendor generado
