@@ -1,6 +1,6 @@
 # Etapa de build con Composer
 FROM composer:2 AS vendor
-WORKDIR /app
+WORKDIR /application
 
 # Instala las libs de sistema para intl y gd en Alpine
 #RUN apk add --no-cache \
@@ -29,7 +29,7 @@ FROM dunglas/frankenphp:php8.4-alpine AS production
 ENV SERVER_NAME=lti.dealernode.net
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
-WORKDIR /app
+WORKDIR /application
 
 # (Repite instalación de extensiones para runtime)
 #RUN install-php-extensions \
@@ -42,7 +42,7 @@ WORKDIR /app
 COPY --from=vendor /app/vendor /app/vendor
 
 # Copiamos el resto de la aplicación
-COPY app/Http/Controllers/Lti .
+COPY . .
 
 # Ajusta permisos
 RUN chown -R www-data:www-data storage bootstrap/cache \
