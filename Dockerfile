@@ -39,7 +39,7 @@ WORKDIR /application
 #      zip
 
 # Copiamos el vendor generado
-COPY --from=vendor /app/vendor /app/vendor
+COPY --from=vendor /application/vendor /application/vendor
 
 # Copiamos el resto de la aplicación
 COPY . .
