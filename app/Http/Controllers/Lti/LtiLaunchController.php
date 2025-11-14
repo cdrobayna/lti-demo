@@ -1,0 +1,42 @@
+<?php
+
+namespace App\Http\Controllers\Lti;
+
+use App\Http\Controllers\Controller;
+use App\Services\Lti\Lti13Service;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Packback\Lti1p3\LtiException;
+
+class LtiLaunchController extends Controller
+{
+    public function launch(Request $request, Lti13Service $ltiService): RedirectResponse
+    {
+        try {
+            $launch = $ltiService->validateLaunch($request->all());
+
+            // Store launch ID in session
+            session(['lti_launch_id' => $launch->getLaunchId()]);
+
+            if ($launch->isDeepLinkLaunch()) {
+                return redirect()->route('lti.deep_link');
+            }
+
+            if ($launch->isResourceLaunch()) {
+                return redirect()->route('lti.resource');
+            }
+
+            if ($launch->isSubmissionReviewLaunch()) {
+                return redirect()->route('lti.submission_review');
+            }
+
+            return redirect()->route('lti.error', [
+                'message' => 'Unknown launch type'
+            ]);
+        } catch (LtiException $e) {
+            return redirect()->route('lti.error', [
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+}

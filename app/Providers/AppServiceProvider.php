@@ -7,6 +7,7 @@ use App\Services\Lti\Lti13Cookie;
 use App\Services\Lti\Lti13Database;
 use Firebase\JWT\JWT;
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Packback\Lti1p3\Interfaces\ICache;
 use Packback\Lti1p3\Interfaces\ICookie;
@@ -29,6 +30,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        if (env('APP_URL')) {
+            URL::forceScheme('https'); // fuerza https en helpers asset()
+        }
+
         // Set JWT leeway to 5 seconds
         JWT::$leeway = 5;
 
