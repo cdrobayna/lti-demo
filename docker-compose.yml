@@ -13,6 +13,26 @@ services:
     networks:
       - application
 
+  application:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    image: lti:latest
+    restart: unless-stopped
+    depends_on:
+      - database
+    ports:
+      - "80:80" # HTTP
+      - "443:443" # HTTPS
+      - "443:443/udp" # HTTP/3
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+      - storage_data:/app/storage
+    networks:
+      - application
+
 volumes:
   db_data:
 
