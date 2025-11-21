@@ -85,15 +85,15 @@ router.post('/deeplink', async (req, res) => {
 router.get('/resources', async (req, res) => {
   const resources = [
     {
-      name: 'Resource1',
+      name: 'Example Resource A',
       value: 'value1'
     },
     {
-      name: 'Resource2',
+      name: 'Example Resource B',
       value: 'value2'
     },
     {
-      name: 'Resource3',
+      name: 'Example Resource C',
       value: 'value3'
     }
   ]

@@ -1,6 +1,7 @@
 require('dotenv').config()
 const path = require('path')
 const routes = require('./src/routes')
+const { url } = require('inspector')
 
 const lti = require('ltijs').Provider
 
@@ -12,10 +13,18 @@ lti.setup(process.env.LTI_KEY,
   }, {
     staticPath: path.join(__dirname, './public'), // Path to static files
     cookies: {
-      secure: false, // Set secure to true if the testing platform is in a different domain and https is being used
-      sameSite: '' // Set sameSite to 'None' if the testing platform is in a different domain and https is being used
+      secure: true, // Set secure to true if the testing platform is in a different domain and https is being used
+      sameSite: 'None' // Set sameSite to 'None' if the testing platform is in a different domain and https is being used
     },
-    devMode: true // Set DevMode to true if the testing platform is in a different domain and https is not being used
+    devMode: false, // Set DevMode to true if the testing platform is in a different domain and https is not being used
+    dynRegRoute: '/register', // Dynamic registration route
+    dynReg: {
+      url: 'https://lti.dealernode.net.dev', // Publicly accessible URL for dynamic registration
+      name: 'LTI Demo Tool', // Tool name for dynamic registration
+      description: 'An ltijs demo tool integration for testing purposes.', // Tool description for dynamic registration
+      redirectUris: ['https://lti.dealernode.net/launch'], // Tool redirect URIs for dynamic registration
+      autoActivate: true // Auto activate platforms upon dynamic registration
+    }
   })
 
 // When receiving successful LTI launch redirects to app
@@ -38,14 +47,14 @@ const setup = async () => {
   /**
    * Register platform
    */
-  /* await lti.registerPlatform({
-    url: 'http://localhost/moodle',
-    name: 'Platform',
-    clientId: 'CLIENTID',
-    authenticationEndpoint: 'http://localhost/moodle/mod/lti/auth.php',
-    accesstokenEndpoint: 'http://localhost/moodle/mod/lti/token.php',
-    authConfig: { method: 'JWK_SET', key: 'http://localhost/moodle/mod/lti/certs.php' }
-  }) */
+  // await lti.registerPlatform({
+  //   url: 'https://moodle.dealernode.net',
+  //   name: 'Moodle Demo',
+  //   clientId: 'BxJx29DDsLSnR7x',
+  //   authenticationEndpoint: 'https://moodle.dealernode.net/mod/lti/auth.php',
+  //   accesstokenEndpoint: 'https://moodle.dealernode.net/mod/lti/token.php',
+  //   authConfig: { method: 'JWK_SET', key: 'https://moodle.dealernode.net/mod/lti/certs.php' }
+  // })
 }
 
 setup()
